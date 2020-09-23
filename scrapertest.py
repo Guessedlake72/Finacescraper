@@ -1,25 +1,23 @@
 import yfinance as yf
-import csv
 import os
-import requests
-
+import datetime
 
 
 #https://old.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=nasdaq&render=download
+
+today = datetime.datetime.now()
 try:
-    os.makedirs("Market Scraper/Initial") 
+    os.makedirs("Initial -" + today.strftime("%c")) 
     print("Directory created successfully") 
 except OSError as error: 
     print("Directory can not be created" )
-    
-try:
-    url = 'https://old.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=nasdaq&render=download'
-    r = requests.get(url, allow_redirects=True)
-    open('facebook.ico', 'wb').write(r.content)
-except OSError as error: 
-    print("File cannot be downloaded" ) 
 
-symbol = "MSFT"
-msft = yf.Ticker(symbol)
-hist = msft.history(period="max")
-hist.to_csv("Market Scraper/Initial/" + symbol + ".txt")
+f = open("symbolfetcher/symbolList.txt", "r")
+symbols = []
+for name in f:
+    symbols.append(name[:-1])
+
+for symbol in symbols:
+    tick = yf.Ticker(symbol)
+    hist = tick.history(period="max")
+    hist.to_csv("Initial -" + today.strftime("%c") +"/" + symbol + ".csv")
