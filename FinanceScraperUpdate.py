@@ -1,5 +1,7 @@
 import yfinance as yf
 import os
+import os.path
+from os import path
 import datetime
 import pandas as pd
 import numpy as np
@@ -10,7 +12,6 @@ def formDate(date):
 
 def writeMissedCsv(daysPassed):
 
-    today = datetime.datetime.now()
     startday = today - datetime.timedelta(days=daysPassed+1)
     endday = today - datetime.timedelta(days=daysPassed)
     newlist = symbols[0:10]
@@ -31,9 +32,21 @@ def writeMissedCsv(daysPassed):
     print(combined)
     combined.to_csv("Incremental -" + formDate(endday) + ".csv")
 
+def findMissingDates(date,passed):
+    print("Checking Incremental -" + formDate(date) + ".csv")
+    print(path.exists("Incremental -" + formDate(date) + ".csv"))
+    if path.exists("Incremental -" + formDate(date) + ".csv") or path.exists("Initial -" + formDate(date) + '/'):
+        exit()
+    else:
+        writeMissedCsv(passed)
+        findMissingDates(date - datetime.timedelta(days=1),passed+1)
+
+
 
 f = open("symbolfetcher/symbolList.txt", "r")
 symbols = []
 for name in f:
     symbols.append(name[:-1])
-writeMissedCsv(0)
+today = datetime.datetime.now()
+findMissingDates(today,0)
+print(path.exists("Incremental -" + formDate(today) + ".csv"))
