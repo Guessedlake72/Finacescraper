@@ -10,7 +10,7 @@ class ToScrapeSpiderXPath(scrapy.Spider):
     def parse(self, response):
         names = response.xpath('//form[@method="post"]//table[@id="CompanylistResults"]//h3/a/text()').getall()
         for symbol in names:
-            f = open("Inital/symbolList.txt", "a")
+            f = open("symbolList.txt", "a")
             f.write(symbol[20:])
             f.write("\n")
             f.close()

@@ -6,8 +6,11 @@ import datetime
 #https://old.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=nasdaq&render=download
 
 today = datetime.datetime.now()
+def formDate(date):
+    return date.strftime("%Y") + "-" + date.strftime("%m") + "-" + date.strftime("%d")
+
 try:
-    os.makedirs("Initial -" + today.strftime("%c")) 
+    os.makedirs("Initial -" + formDate(today)) 
     print("Directory created successfully") 
 except OSError as error: 
     print("Directory can not be created" )
