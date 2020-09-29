@@ -23,4 +23,5 @@ for name in f:
 for symbol in symbols:
     tick = yf.Ticker(symbol)
     hist = tick.history(period="max")
+    hist.insert(0,'Symbol',symbol, True)
     hist.to_csv("Initial -" + formDate(today) +"/" + symbol + ".csv")
